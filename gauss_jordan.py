@@ -47,3 +47,4 @@ def elimination(AX:np.ndarray, b_verbose:bool=True) -> np.ndarray:
                     print(AX)
 
     return AX[:, AX.shape[0]:]
+
