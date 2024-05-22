@@ -65,7 +65,7 @@ def heun(dx_dt, t_array, x_0):
     return time_list, result_list
 
 
-def rk4_step(f, x0, t0, t1):
+def rk4_step(f, x0, t0, t1, args=tuple()):
     """
     One time step of Runge-Kutta method
 
@@ -79,16 +79,16 @@ def rk4_step(f, x0, t0, t1):
     t_half = t0 + delta_t_half
     
     # Step 1
-    s1 = f(t0, x0)
+    s1 = f(t0, x0, *args)
 
     # Step 2
-    s2 = f(t_half, x0 + s1 * delta_t_half)
+    s2 = f(t_half, x0 + s1 * delta_t_half, *args)
 
     # Step 3
-    s3 = f(t_half, x0 + s2 * delta_t_half)
+    s3 = f(t_half, x0 + s2 * delta_t_half, *args)
 
     # Step 4
-    s4 = f(t1, x0 + s3 * delta_t)
+    s4 = f(t1, x0 + s3 * delta_t, *args)
 
     # Step 5
     s = (1.0 / 6.0) * (s1 + (s2 + s3) * 2 + s4)
@@ -99,14 +99,14 @@ def rk4_step(f, x0, t0, t1):
     return x1
 
 
-def rk4(dx_dt, t_array, x_0):
+def rk4(dx_dt, t_array, x_0, args=tuple()):
 
-    time_list, result_list = ode_solver(rk4_step, dx_dt, t_array, x_0)
+    time_list, result_list = ode_solver(rk4_step, dx_dt, t_array, x_0, args=args)
 
     return time_list, result_list
 
 
-def ode_solver(step, dx_dt, t_array, x_0):
+def ode_solver(step, dx_dt, t_array, x_0, args=tuple()):
     time_list = [t_array[0]]
     result_list = [x_0]
 
@@ -114,7 +114,7 @@ def ode_solver(step, dx_dt, t_array, x_0):
 
     for k, t_i in enumerate(t_array[:-1]):
         # time step
-        x_i_plus_1 = step(dx_dt, x_i, t_i, t_array[k+1])
+        x_i_plus_1 = step(dx_dt, x_i, t_i, t_array[k+1], args=args)
 
         time_list.append(t_array[k+1])
         result_list.append(x_i_plus_1)
