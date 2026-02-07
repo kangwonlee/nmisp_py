@@ -1,3 +1,6 @@
+import pylab as py
+
+
 def num_int_0(f, xi, xe, n):
     x_array = py.linspace(xi, xe, n+1)
     delta_x = x_array[1] - x_array[0]
